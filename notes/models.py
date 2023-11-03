@@ -43,7 +43,7 @@ class Niveau(models.Model):
     
     
     def __str__(self) -> str:
-        return self.nom, 
+        return self.nom 
     
  
  
