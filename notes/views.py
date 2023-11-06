@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Eleve,Matiere
-
 # Create your views here.
 def index(request):
     return render(request, 'notes/index.html')
@@ -10,7 +9,7 @@ def index(request):
 from .models import Eleve,Matiere
 def eleves(request):
     eleves  = Eleve.objects.all()
-    return HttpResponse(eleves)
+    return render(request, 'eleves/index.html', {'eleves': eleves})
 
 #Les détails de chaque eleve
 def eleve(request, id):
@@ -19,7 +18,7 @@ def eleve(request, id):
 #La vue des matieres
 def matieres(request):
     matieres = Matiere.objects.all()
-    return HttpResponse(matieres)
+    return render(request, 'matieres/index.html', {'matieres': matieres})
 
 #details d'une matiere
 def matiere(request, id):   
