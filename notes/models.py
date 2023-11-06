@@ -31,7 +31,7 @@ class Matiere(models.Model):
         verbose_name_plural = "Matières"
     
     def __str__(self) -> str:
-        return self.nom
+        return self.nom+","
      
 
     
@@ -57,7 +57,7 @@ class Eleve(Personne):
         verbose_name_plural = "Elèves"
     
     def __str__(self) -> str:
-        return "{0} {1}".format(self.nom,self.prenom)
+        return "{0} {1},".format(self.nom,self.prenom)
     
 
 class Note(models.Model):
