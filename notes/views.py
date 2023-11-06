@@ -1,6 +1,6 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from .models import Eleve,Matiere
+from django.shortcuts import render,get_object_or_404
+from .models import Eleve,Matiere,Niveau
+from django.http import Http404
 # Create your views here.
 def index(request):
     return render(request, 'notes/index.html')
@@ -13,7 +13,12 @@ def eleves(request):
 
 #Les détails de chaque eleve
 def eleve(request, id):
-    return HttpResponse("Les détails de l'eleve " + str(id))
+    try:
+        details = Eleve.objects.get(id=id)
+    except Eleve.DoesNotExist:
+        raise Http404("Cet eleve n'existe pas")
+    
+    return render(request, 'eleves/details.html', {'details': details})
 
 #La vue des matieres
 def matieres(request):
@@ -21,9 +26,11 @@ def matieres(request):
     return render(request, 'matieres/index.html', {'matieres': matieres})
 
 #details d'une matiere
-def matiere(request, id):   
-    return HttpResponse("Les détails de la matière " + str(id))
+def matiere(request, id):
+    details = get_object_or_404(Matiere, id=1)
+    return render(request, 'matieres/details.html', {'details': details})
 
 #les détails de chaque niveau
 def niveau(request, id):
-    return HttpResponse("Les détails du niveau " + str(id))
+    details = get_object_or_404(Niveau, id=1)
+    return render(request, 'niveaux/details.html', {'details': details})
