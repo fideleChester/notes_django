@@ -865,6 +865,10 @@ select {
   width: 20rem;
 }
 
+.w-8 {
+  width: 2rem;
+}
+
 .max-w-screen-xl {
   max-width: 1280px;
 }
@@ -1005,6 +1009,26 @@ select {
 
 .pr-11 {
   padding-right: 2.75rem;
+}
+
+.pl-20 {
+  padding-left: 5rem;
+}
+
+.pr-20 {
+  padding-right: 5rem;
+}
+
+.pr-60 {
+  padding-right: 15rem;
+}
+
+.pl-6 {
+  padding-left: 1.5rem;
+}
+
+.pl-60 {
+  padding-left: 15rem;
 }
 
 .text-left {
