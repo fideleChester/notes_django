@@ -4,7 +4,7 @@ from .models import Eleve,Matiere
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Bonjour tout le monde!")
+    return render(request, 'notes/index.html')
 
 #La vue de tous les eleves
 from .models import Eleve,Matiere
