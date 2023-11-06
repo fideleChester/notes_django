@@ -27,10 +27,10 @@ def matieres(request):
 
 #details d'une matiere
 def matiere(request, id):
-    details = get_object_or_404(Matiere, id=1)
+    details = get_object_or_404(Matiere, id=id)
     return render(request, 'matieres/details.html', {'details': details})
 
 #les détails de chaque niveau
 def niveau(request, id):
-    details = get_object_or_404(Niveau, id=1)
+    details = get_object_or_404(Niveau, id=id)
     return render(request, 'niveaux/details.html', {'details': details})
