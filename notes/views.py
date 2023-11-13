@@ -15,10 +15,12 @@ def eleves(request):
 def eleve(request, id):
     try:
         details = Eleve.objects.get(id=id)
+        matieres = Matiere.objects.filter(eleve=details)
+        count = matieres.count()
     except Eleve.DoesNotExist:
         raise Http404("Cet eleve n'existe pas")
     
-    return render(request, 'eleves/details.html', {'details': details})
+    return render(request, 'eleves/details.html', {'details': details,'matieres':matieres,'count':count})
 
 #La vue des matieres
 def matieres(request):
