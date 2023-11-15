@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Niveau,Eleve,Enseignant,Matiere
+from .models import Niveau,Eleve,Enseignant,Matiere,Note
 # Register your models here.
 class NiveauAdmin(admin.ModelAdmin):
     list_display = ["nom"]
@@ -20,3 +20,7 @@ class MatiereAdmin(admin.ModelAdmin):
     list_display = ["nom"]
     
 admin.site.register(Matiere)
+
+class EleveAdmin(admin.ModelAdmin):
+    list_display = ["valeur","matiere"]
+admin.site.register(Note,EleveAdmin)

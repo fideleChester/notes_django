@@ -51,7 +51,7 @@ class Eleve(Personne):
     #Ses attributs
     id = models.IntegerField(primary_key=True)
     niveau = models.ForeignKey(Niveau,on_delete=models.CASCADE)
-    matieres = models.ManyToManyField(Matiere)
+    # matieres = models.ManyToManyField(Matiere)
     
     class Meta:
         verbose_name_plural = "Elèves"
@@ -64,9 +64,9 @@ class Note(models.Model):
     #ses attribut
     valeur = models.FloatField(null=True)
     #un elève a plusieurs notes
-    note = models.ForeignKey(Eleve,on_delete=models.CASCADE) 
+    eleve = models.ForeignKey(Eleve,on_delete=models.CASCADE) 
     matiere = models.ForeignKey(Matiere,on_delete=models.CASCADE)   
     
     def __str__(self) -> str:
-        return self.valeur
+        return str(self.valeur)
     
