@@ -8,5 +8,6 @@ urlpatterns = [
     path('matieres/', views.matieres, name="matieres"),
     path('matiere/<int:id>/', views.matiere, name="matiere"),
     path('niveau/<int:id>/', views.niveau, name="niveau"),
+    path('add_note/<int:eleve>/<int:matiere>/', views.add_note, name="add_note"),
 ]
 

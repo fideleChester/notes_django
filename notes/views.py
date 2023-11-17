@@ -1,13 +1,13 @@
-from django.shortcuts import render,get_object_or_404
-from .models import Eleve,Matiere,Niveau
+from django.shortcuts import redirect, render,get_object_or_404,HttpResponse
+from .models import Eleve,Matiere,Niveau,Note
 from django.http import Http404
-from django.db.models import Avg
+
 
 #Mes modules
 from .methodes.methods_eleve import *
 # Create your views here.
 def index(request):
-    return render(request, 'notes/index.html')
+    return render(request, 'base.html')
 
 #La vue de tous les eleves
 
@@ -55,3 +55,27 @@ def matiere(request, id):
 def niveau(request, id):
     details = get_object_or_404(Niveau, id=id)
     return render(request, 'niveaux/details.html', {'details': details})
+
+
+
+
+
+def add_note(request,eleve,matiere):
+    if request.method == 'POST':
+        note = request.POST['note']
+        eleve = Eleve.objects.get(id=eleve)
+        """
+            La methode pour verifier si l'élève suit la matiere, True si vrai
+        """
+        eleve_suit_matiere = verifie_eleve_suit_matiere(eleve=eleve,matiere=matiere)
+        
+        if not eleve_suit_matiere:
+            raise Http404("Cet eleve ne suit pas cette matiere")
+        else:
+            sav_note = Note(valeur=note,eleve_id=eleve.id,matiere_id=matiere)
+            sav_note.save()
+            """
+            On redirige vers les détails de l'élève
+            """
+            return redirect('notes:eleve',id=eleve.id)
+    return render(request, 'notes/add_note.html')

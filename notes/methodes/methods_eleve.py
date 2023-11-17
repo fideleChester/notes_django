@@ -11,3 +11,10 @@ def calcul_moyenne_eleve_par_matiere(matieres):
 def moyenne_generale_eleve(moyennes):
     moyenne = sum(moyennes) / len(moyennes)
     return moyenne
+
+
+def verifie_eleve_suit_matiere(eleve, matiere):
+    """
+    Renvoie True si l'élève suit la matière, False sinon
+    """
+    return eleve.niveau.matiere_set.filter(pk=matiere).exists()
