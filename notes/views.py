@@ -63,7 +63,11 @@ def niveau(request, id):
 def add_note(request,eleve,matiere):
     if request.method == 'POST':
         note = request.POST['note']
-        eleve = Eleve.objects.get(id=eleve)
+        try:
+            eleve = Eleve.objects.get(id=eleve)
+        except Eleve.DoesNotExist:  
+            raise Http404("Cet eleve n'existe pas")
+        
         """
             La methode pour verifier si l'élève suit la matiere, True si vrai
         """
