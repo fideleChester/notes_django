@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render,get_object_or_404,HttpResponse
 from .models import Eleve,Matiere,Niveau,Note
 from django.http import Http404
+from .forms import NoteForm
 
 
 #Mes modules
@@ -62,24 +63,39 @@ def niveau(request, id):
 
 def add_note(request,eleve,matiere):
     if request.method == 'POST':
-        note = request.POST['note']
-        try:
-            eleve = Eleve.objects.get(id=eleve)
-        except Eleve.DoesNotExist:  
-            raise Http404("Cet eleve n'existe pas")
+        form = NoteForm(request.POST)
         
-        """
+        #Valider les champs 
+        if form.is_valid():
+            
+            
+            note = request.POST['valeur']
+            try:
+                eleve = Eleve.objects.get(id=eleve)
+            except Eleve.DoesNotExist:  
+                raise Http404("Cet eleve n'existe pas")
+            
+            
+            """            
             La methode pour verifier si l'élève suit la matiere, True si vrai
-        """
-        eleve_suit_matiere = verifie_eleve_suit_matiere(eleve=eleve,matiere=matiere)
-        
-        if not eleve_suit_matiere:
-            raise Http404("Cet eleve ne suit pas cette matiere")
-        else:
-            sav_note = Note(valeur=note,eleve_id=eleve.id,matiere_id=matiere)
-            sav_note.save()
-            """
+            """            
+            
+            eleve_suit_matiere = verifie_eleve_suit_matiere(eleve=eleve,matiere=matiere)
+            
+            if not eleve_suit_matiere:
+                raise Http404("Cet eleve ne suit pas cette matiere")
+            else:
+                sav_note = Note(valeur=note,eleve_id=eleve.id,matiere_id=matiere)
+                sav_note.save()
+                
+            """ 
             On redirige vers les détails de l'élève
-            """
+            """            
+                
             return redirect('notes:eleve',id=eleve.id)
-    return render(request, 'notes/add_note.html')
+            
+            
+    else:
+        form = NoteForm()
+
+    return render(request, 'notes/add_note.html',{'form':form})

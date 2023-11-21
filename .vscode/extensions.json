@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "shamanu4.django-intellisense"
+        "shamanu4.django-intellisense",
+        "bigonesystems.django"
     ]
 }
