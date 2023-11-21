@@ -1,5 +1,5 @@
 from django.db import models
-
+import re
 # Create your models here.
 #Le modele personne
 class Personne(models.Model):
@@ -58,6 +58,15 @@ class Eleve(Personne):
     
     def __str__(self) -> str:
         return "{0} {1}".format(self.nom,self.prenom)
+    
+    
+    def clean(self):
+        from django.core.exceptions import ValidationError 
+  
+        if re.search(r"\d",self.nom):
+            raise ValidationError("Le nom doit être un string")
+              
+        
     
 
 class Note(models.Model):
