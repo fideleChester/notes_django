@@ -9,7 +9,10 @@ def calcul_moyenne_eleve_par_matiere(matieres):
     return moyennes
 
 def moyenne_generale_eleve(moyennes):
-    moyenne = sum(moyennes) / len(moyennes)
+    try:
+        moyenne = sum(moyennes) / len(moyennes)
+    except:
+        pass
     return moyenne
 
 

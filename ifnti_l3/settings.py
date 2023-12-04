@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'notes.apps.NotesConfig',
     'tailwind',
     'theme',
-    'django_browser_reload'
+    'django_browser_reload',
+    'import_export'
 
 ]
 
@@ -133,3 +134,8 @@ TAILWIND_APP_NAME = 'theme'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+
+
+LOGIN_REDIRECT_URL = '/account/login'
+LOGIN_URL = '/account/login/'

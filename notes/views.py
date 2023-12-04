@@ -2,7 +2,9 @@ from django.shortcuts import redirect, render,get_object_or_404,HttpResponse
 from .models import Eleve,Matiere,Niveau,Note
 from django.http import Http404
 from .forms import NoteForm
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import permission_required
 
 #Mes modules
 from .methodes.methods_eleve import *
@@ -13,28 +15,60 @@ def index(request):
 #La vue de tous les eleves
 
 
-
+@login_required(login_url="/accounts/login/")
+@permission_required("notes.view_eleve")
 def eleves(request):
     eleves  = Eleve.objects.all()
     return render(request, 'eleves/index.html', {'eleves': eleves})
-
+   
 #Les détails de chaque eleve
+@login_required(login_url="/accounts/login/")
+@permission_required("notes.view_eleve")
 def eleve(request, id):
+    moyennes = []
     try:
         # La moyenne de cet éléve rangée dans le tableau
         
-        eleve = Eleve.objects.get(id=id)
-        matieres = eleve.niveau.matiere_set.all()   
-        # Calcul de la moyenne de chaque matière
-        moyennes =  calcul_moyenne_eleve_par_matiere(matieres)
+        eleve = Eleve.objects.get(id_eleve=id)
+        matieres = eleve.niveau.matiere_set.all()
         
+        dict_notes =[]
+        list_notes = []
+        table_sup = []
+        
+        
+        for matiere in matieres:
+            table_matiere = []
+            table_matiere.append(matiere.nom)
+            table_matiere.append(matiere.id)
+            note_eleve = matiere.note_set.filter(eleve = eleve,matiere=matiere)
+            for note in note_eleve:
+                list_notes.append(note)
+                #Tableau des matières
+            table_sup.append(table_matiere)
+            #liste des notes
+            table_sup.append(list_notes)
+            #La myenne pour chaque matiere d'un élève
+            moyenne = matiere.note_set.filter(eleve = eleve).aggregate(Avg('valeur',default=0))['valeur__avg']
+            
+            moyennes.append(moyenne)
+            
+            table_matiere.append(moyenne)
+            
+            dict_notes.append(table_sup)
+            
+            list_notes = []
+            table_sup = []
+            table_matiere = []
+       
+        # Calcul de la moyenne de chaque matière
         moyennne_generale = moyenne_generale_eleve(moyennes)
         
         context = {
             'eleve': eleve,
             'matieres':zip(moyennes,matieres),
-            "moyennes":moyennes,
-            "moyenne_generale":moyennne_generale
+            "moyenne_generale":moyennne_generale,
+            "matiere_notes":dict_notes
         }
         
     except Eleve.DoesNotExist:
@@ -43,6 +77,8 @@ def eleve(request, id):
     return render(request, 'eleves/details.html',context )
 
 #La vue des matieres
+@login_required(login_url="/accounts/login/")
+@permission_required("notes.view_matiere")
 def matieres(request):
     matieres = Matiere.objects.all()
     return render(request, 'matieres/index.html', {'matieres': matieres})
@@ -59,8 +95,8 @@ def niveau(request, id):
 
 
 
-
-
+@login_required(login_url="/accounts/login/")
+@permission_required("notes.add_note")
 def add_note(request,eleve,matiere):
     if request.method == 'POST':
         form = NoteForm(request.POST)
@@ -71,7 +107,7 @@ def add_note(request,eleve,matiere):
             
             note = request.POST['valeur']
             try:
-                eleve = Eleve.objects.get(id=eleve)
+                eleve = Eleve.objects.get(id_eleve=eleve)
             except Eleve.DoesNotExist:  
                 raise Http404("Cet eleve n'existe pas")
             
@@ -85,15 +121,14 @@ def add_note(request,eleve,matiere):
             if not eleve_suit_matiere:
                 raise Http404("Cet eleve ne suit pas cette matiere")
             else:
-                sav_note = Note(valeur=note,eleve_id=eleve.id,matiere_id=matiere)
+                sav_note = Note(valeur=note,eleve_id=eleve.id_eleve,matiere_id=matiere)
                 sav_note.save()
                 
             """ 
             On redirige vers les détails de l'élève
             """            
                 
-            return redirect('notes:eleve',id=eleve.id)
-            
+            return redirect('notes:eleve',id=eleve.id_eleve)            
             
     else:
         form = NoteForm()

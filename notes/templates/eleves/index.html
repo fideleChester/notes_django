@@ -5,8 +5,8 @@
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-                <th scope="col" class="px-6 py-3">Nom & Prenom</th>
-                <th scope="col" class="px-6 py-3">Numéro</th>
+                <th scope="col" class="px-6 py-3">Nom </th>
+                <th scope="col" class="px-6 py-3">Prénom</th>
                 <th scope="col" class="px-6 py-3">date de naissance</th>
                 <th scope="col" class="px-6 py-3">Sexe</th>
                 <th scope="col" class="px-6 py-3">
@@ -19,14 +19,14 @@
             {% for eleve in eleves %}
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{ eleve.nom }} {{ eleve.prenom }}
+                    {{ eleve.nom }} 
                 </th>
-                <td class="px-6 py-4">{{ eleve.id }}</td>
+                <td class="px-6 py-4">{{ eleve.prenom }}</td>
                 <td class="px-6 py-4">{{ eleve.date_naissance }}</td>
                 <td class="px-6 py-4">{{ eleve.sexe }}</td>
                 <td class="px-6 py-4 text-right">
                     <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                    <a href="{% url 'notes:eleve' eleve.id %} "
+                    <a href="{% url 'notes:eleve' eleve.id_eleve %} "
                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Détails</a>
                 </td>
             </tr>

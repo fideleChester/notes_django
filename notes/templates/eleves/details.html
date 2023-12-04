@@ -20,17 +20,17 @@
 <div style="margin-top: 1rem;padding: 1rem;"
     class="grid grid-cols-1 grid-rows-1 md:grid-cols-4">
     
-    {% for matiere in matieres%}
+    {% for matiere in matiere_notes %}
  
     <div 
         class=" w-full max-w-sm p-4 m-1  bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-        <a href="{% url 'notes:add_note' eleve.id matiere.1.id %} "
+        <a href="{% url 'notes:add_note' eleve.id_eleve matiere.0.1 %}"
         class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Ajouter une note</a>
-        <h5 class="mb-4 text-xl font-medium text-gray-500 dark:text-gray-400">{{ matiere.1 }}</h5>
+        <h5 class="mb-4 text-xl font-medium text-gray-500 dark:text-gray-400">{{ matiere.0.0 }}</h5>
         <ul role="list" class="space-y-5 my-7">
 
             
-            {% for note in matiere.1.note_set.all %}
+            {% for note in matiere.1 %}
             
             <li class="flex items-center">
                 <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500" aria-hidden="true"
@@ -43,8 +43,8 @@
             
             {% endfor %}
             
-            {% if matiere.0 != None %}
-            <h4  style="color: green;" class="text-green-600  rounded-lg text-sm px-5 py-2.5 inline-flex justify-center w-full text-center">{{ matiere.0 }}</h4>
+            {% if matiere.0.2 != 0.0 %}
+            <h4  style="color: green;" class="text-green-600  rounded-lg text-sm px-5 py-2.5 inline-flex justify-center w-full text-center">{{ matiere.0.2 }}</h4>
                 
             {% endif %}
                 

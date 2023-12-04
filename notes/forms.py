@@ -21,6 +21,7 @@ class EleveForm(ModelForm):
     class Meta:
         fields = "__all__"
         model = Eleve
+        exclude = ["id_eleve"]
         
 
 

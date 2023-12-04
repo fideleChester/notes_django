@@ -1,14 +1,19 @@
 from django.contrib import admin
 from .models import Niveau,Eleve,Enseignant,Matiere,Note
 from .forms import EleveForm
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 # Register your models here.
 class NiveauAdmin(admin.ModelAdmin):
     list_display = ["nom"]
     
 admin.site.register(Niveau,NiveauAdmin)
   
-class EleveAdmin(admin.ModelAdmin):
-    list_display = ["nom","prenom","niveau",'id']
+class EleveAdmin(ImportExportModelAdmin):
+    list_display = ["nom","prenom","niveau","sexe"]
+    list_per_page = 10
+    search_fields = ["nom","prenom"]
+    list_filter = ["niveau"]
     form = EleveForm
     
 admin.site.register(Eleve,EleveAdmin)
@@ -23,6 +28,5 @@ class MatiereAdmin(admin.ModelAdmin):
     
 admin.site.register(Matiere)
 
-class EleveAdmin(admin.ModelAdmin):
-    list_display = ["valeur","matiere"]
-admin.site.register(Note,EleveAdmin)
+
+admin.site.register(Note)
