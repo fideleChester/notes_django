@@ -81,9 +81,11 @@ WSGI_APPLICATION = 'ifnti_l3.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "NAME": "notes",
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": "loyal",
+        "PASSWORD": "loyal06",
     }
 }
 

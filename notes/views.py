@@ -5,6 +5,8 @@ from .forms import NoteForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required
+import os
+from templating_ifnti.controleur import generate_pdf
 
 #Mes modules
 from .methodes.methods_eleve import *
@@ -18,8 +20,9 @@ def index(request):
 @login_required(login_url="/accounts/login/")
 @permission_required("notes.view_eleve")
 def eleves(request):
+    niveaux  = Niveau.objects.all().order_by('nom')
     eleves  = Eleve.objects.all()
-    return render(request, 'eleves/index.html', {'eleves': eleves})
+    return render(request, 'eleves/index.html', {'eleves': eleves,'niveaux':niveaux})
    
 #Les détails de chaque eleve
 @login_required(login_url="/accounts/login/")
@@ -134,3 +137,61 @@ def add_note(request,eleve,matiere):
         form = NoteForm()
 
     return render(request, 'notes/add_note.html',{'form':form})
+
+
+
+'''RETRIEVES ALL STUDENTS '''
+
+
+
+def listEleves(request):
+    # ALL STUDENTS IN DATABASE
+    queryset = Eleve.objects.all()
+    # TRANSFORME OBJECTS TO DICTIONNAIRE
+    lists = list(queryset.values())
+    # STUDENTS DICTIONNAIRE
+    dictionary_list = {
+           "eleves":lists
+        }
+    # GENERATE PDF
+    generate_pdf(dictionary_list)
+    # RELATIVE PATH
+    path_to_the_file = 'templating_ifnti/out/liste_eleves.pdf'
+    if path_to_the_file.endswith('.pdf'):
+        if os.path.exists(path_to_the_file):
+            with open(path_to_the_file, 'rb') as file:
+                response = HttpResponse(file.read(), content_type='application/pdf')
+                response['Content-Disposition'] = 'inline; filename="liste des élèves"'
+                return response
+        else:
+            return Http404("Le fichier PDF n'a pas été trouvé.")
+    else:
+        return Http404("Le fichier n'est pas au format attendu (.pdf)")
+
+def liste_niveauElv(request,id_niveau):
+    # ALL STUDENTS IN DATABASE in this level
+    queryset = Eleve.objects.filter(niveau_id=id_niveau)
+    # TRANSFORME OBJECTS TO DICTIONNAIRE
+    lists = list(queryset.values())
+    # STUDENTS DICTIONNAIRE
+    dictionary_list = {
+           "eleves":lists
+        }
+    # GENERATE PDF
+    generate_pdf(dictionary_list)
+    # RELATIVE PATH
+    path_to_the_file = 'templating_ifnti/out/liste_eleves.pdf'
+    if path_to_the_file.endswith('.pdf'):
+        if os.path.exists(path_to_the_file):
+            with open(path_to_the_file, 'rb') as file:
+                response = HttpResponse(file.read(), content_type='application/pdf')
+                response['Content-Disposition'] = 'inline; filename="liste des élèves"'
+                return response
+        else:
+                    return Http404("Le fichier PDF n'a pas été trouvé.")
+    else:
+        return Http404("Le fichier n'est pas au format attendu (.pdf)")
+    # ALL STUDENTS IN DATABASE
+    
+    
+    

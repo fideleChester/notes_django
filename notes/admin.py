@@ -4,7 +4,7 @@ from .forms import EleveForm
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 # Register your models here.
-class NiveauAdmin(admin.ModelAdmin):
+class NiveauAdmin(ImportExportModelAdmin):
     list_display = ["nom"]
     
 admin.site.register(Niveau,NiveauAdmin)
@@ -18,15 +18,20 @@ class EleveAdmin(ImportExportModelAdmin):
     
 admin.site.register(Eleve,EleveAdmin)
 
-class EnseignantAdmin(admin.ModelAdmin):
+class EnseignantAdmin(ImportExportModelAdmin):
     list_display = ["nom","prenom","sexe"]
 
-admin.site.register(Enseignant)
+admin.site.register(Enseignant,EnseignantAdmin)
 
-class MatiereAdmin(admin.ModelAdmin):
+class MatiereAdmin(ImportExportModelAdmin):
     list_display = ["nom"]
     
-admin.site.register(Matiere)
+admin.site.register(Matiere,MatiereAdmin)
 
+class NoteAdmin(ImportExportModelAdmin):
 
-admin.site.register(Note)
+    list_per_page = 10
+
+    list_filter = ["eleve__niveau"]
+admin.site.register(Note,NoteAdmin)
+
