@@ -9,7 +9,7 @@ import os
 from templating_ifnti.controleur import generate_pdf
 
 #Mes modules
-from .methodes.methods_eleve import *
+from .methodes import *
 # Create your views here.
 def index(request):
     return render(request, 'base.html')
@@ -52,7 +52,7 @@ def eleve(request, id):
             #liste des notes
             table_sup.append(list_notes)
             #La myenne pour chaque matiere d'un élève
-            moyenne = matiere.note_set.filter(eleve = eleve).aggregate(Avg('valeur',default=0))['valeur__avg']
+            moyenne = matiere.note_set.filter(eleve = eleve).aggregate(methods_eleve.Avg('valeur',default=0))['valeur__avg']
             
             moyennes.append(moyenne)
             
@@ -65,7 +65,7 @@ def eleve(request, id):
             table_matiere = []
        
         # Calcul de la moyenne de chaque matière
-        moyennne_generale = moyenne_generale_eleve(moyennes)
+        moyennne_generale = methods_eleve.moyenne_generale_eleve(moyennes)
         
         context = {
             'eleve': eleve,
@@ -119,7 +119,7 @@ def add_note(request,eleve,matiere):
             La methode pour verifier si l'élève suit la matiere, True si vrai
             """            
             
-            eleve_suit_matiere = verifie_eleve_suit_matiere(eleve=eleve,matiere=matiere)
+            eleve_suit_matiere = methods_eleve.verifie_eleve_suit_matiere(eleve=eleve,matiere=matiere)
             
             if not eleve_suit_matiere:
                 raise Http404("Cet eleve ne suit pas cette matiere")
